@@ -80,17 +80,19 @@ echo traitement();
 ?>
 
 <!-- EXO 3 --> 
-<body>
+<!-- <body>
 	<h1>EXO 3</h1>
 	<form action="" method="post">
 		<input type="mail" name="email" placeholder="saisir un email" <?= $_POST["email"] ?? " " ?>>
-		<input type="password" name="password" placeholder="saisir un mot de passe" <?= $_POST["password"] ?? " " ?>>
+		<input type="password" name="password" placeholder="saisir un mot de passe">
 		<input type="submit" value="connexion" name="connexion">
 	</form>
 </body>
 </html>
+-->
 
 <?php
+/*
 const EMAIL = "admin@test.com";
 const PASSWORD = "php2026";
 
@@ -110,4 +112,75 @@ function traitement():string{
 	return "Connexion réussie";
 };
 
+echo traitement();
+*/
+?>
+<!-- EXO 4 -->
+<body>
+	<h1>EXO 4</h1>
+	<form action="" method="post">
+		<input type="text" name="nom" placeholder="saisir un nom" >
+		<input type="text" name="prenom" placeholder="saisir un prenom">
+		<input type="email" name="mail" placeholder="saisir un email" >
+		<input type="password" name="password" placeholder="saisir un mot de passe">
+		<input type="password" name="passwordVerif" placeholder="confirmer le mot de passe">
+		<input type="date" name="bDay" placeholder="Saisir la date de naissance">
+		<input type="submit" value="inscription" name="inscription">
+	</form>
+</body>
+</html>
+
+<?php
+function traitement():string{
+
+	if(!isset($_POST["inscription"])){
+		return "formulaire non soumis";
+	}
+	foreach (["nom", "prenom", "mail", "password", "passwordVerif", "bDay"] as $champ) {
+    if (empty(trim($_POST[$champ]))) {
+        return "Champ vide";
+    }
+}
+	$nom=$_POST["nom"];
+	$prenom=$_POST["prenom"];
+	$mail=$_POST["mail"];
+	$password=$_POST["password"];
+	$passwordVerif=$_POST["passwordVerif"];
+	$bDay=new DateTime($_POST["bDay"]);
+
+	if(strlen($nom)<2 || strlen($prenom)<2){
+		return "Le nom et le prénom doivent contenir au moins 2 caractères";
+	}
+	if(!filter_var($mail, FILTER_VALIDATE_EMAIL)){
+		return "Email invalide";
+	}
+	if(strlen($password)<8){
+		return "Mot de passe trop court (8caractère minimum)";
+	}
+	if(!preg_match('/[A-Z]/',$password)){
+		return "Au moins une majuscule dans le mot de passe";
+	}
+	if(!preg_match('/[a-z]/',$password)){
+		return "Au moins une minuscule dans le mot de passe";
+	}
+	if(!preg_match('/\d/',$password)){
+		return "Au moins un chiffre dans le mot de passe";
+	}
+
+	if($password !== $passwordVerif){
+		return "Les deux mots de passes ne correspondent pas";
+	}
+	if($bDay > new DateTime()){
+		return "Vous ne pouvez pas être né dans le futur!";
+	}
+	if($bDay ->diff(new DateTime())->y <18){
+		return "Vous devez avoir plus de 18 ans pour vous inscrire a ce site pour adulte (impot.gouv)";
+	}
+	$nom=htmlspecialchars($nom);
+	$prenom=htmlspecialchars($prenom);
+	$mail=htmlspecialchars($mail);
+	$displayBDay=htmlspecialchars($_POST["bDay"]);
+	$msg = "Inscription réussie! <br>" . "Nom : $nom <br> Prenom: $prenom <br> mail : $mail <br> date de naissance : " . $displayBDay  ;
+	return $msg;
+}
 echo traitement();
