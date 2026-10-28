@@ -29,7 +29,7 @@ if (isset($_POST["submit"])){
 ?> 
 
 <!-- EXO 2 --> 
-<body>
+<!-- <body>
 	<h1>EXO 2</h1>
 	<form action="" method="post">
 		<input type="text" name="nbr1" placeholder="saisir un nombre" <?= $_POST["nbr1"] ?? " " ?>>
@@ -44,8 +44,9 @@ if (isset($_POST["submit"])){
 	</form>
 </body>
 </html>
-
+-->
 <?php
+/*
 const CORRESPONDANCE = [
 	"add" => "+",
 	"sous"=> "-",
@@ -74,4 +75,39 @@ function traitement():string{
 	return $msg;
 
 }
+echo traitement();
+*/
+?>
+
+<!-- EXO 3 --> 
+<body>
+	<h1>EXO 3</h1>
+	<form action="" method="post">
+		<input type="mail" name="email" placeholder="saisir un email" <?= $_POST["email"] ?? " " ?>>
+		<input type="password" name="password" placeholder="saisir un mot de passe" <?= $_POST["password"] ?? " " ?>>
+		<input type="submit" value="connexion" name="connexion">
+	</form>
+</body>
+</html>
+
+<?php
+const EMAIL = "admin@test.com";
+const PASSWORD = "php2026";
+
+function traitement():string{
+	if (!isset($_POST["connexion"])){
+		return "Formulaire non soumis";
+	};
+	if(!isset($_POST["email"]) && !isset($_POST["password"])){
+		return "champs vide";
+	}
+	if($_POST["email"]!=EMAIL){
+		return "Email incorrect";
+	}
+	if($_POST["password"]!=PASSWORD){
+		return "Password incorrect";
+	}
+	return "Connexion réussie";
+};
+
 echo traitement();
