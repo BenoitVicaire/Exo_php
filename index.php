@@ -116,6 +116,7 @@ echo traitement();
 */
 ?>
 <!-- EXO 4 -->
+<!--
 <body>
 	<h1>EXO 4</h1>
 	<form action="" method="post">
@@ -129,8 +130,10 @@ echo traitement();
 	</form>
 </body>
 </html>
+-->
 
 <?php
+/*
 function traitement():string{
 
 	if(!isset($_POST["inscription"])){
@@ -181,6 +184,63 @@ function traitement():string{
 	$mail=htmlspecialchars($mail);
 	$displayBDay=htmlspecialchars($_POST["bDay"]);
 	$msg = "Inscription réussie! <br>" . "Nom : $nom <br> Prenom: $prenom <br> mail : $mail <br> date de naissance : " . $displayBDay  ;
+	return $msg;
+}
+echo traitement();
+*/
+?>
+
+<!-- EXO 5-->
+<body>
+	<h1>EXO 5</h1>
+	<form action="" method="post">
+		<input type="text" name="nom" placeholder="saisir un nom" required>
+		<select name="note" required>
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+		<textarea name="commentaire" placeholder="Votre commentaire"></textarea>
+		<label for="CGU">Accepter les confitions d'utilisation</label>
+		<input type="checkbox" name="CGU" required>
+		<input type="submit" value="publier" name="publier">
+	</form>
+</body>
+</html>
+
+<?php
+function traitement():string{
+	if(!isset($_POST["publier"])){
+		return "formulaire non soumis";
+	}
+	foreach (["nom", "note", "CGU"] as $champ) {
+		if (empty(trim($_POST[$champ]))) {
+			return "Champ vide";
+		}
+	}
+	$nom=$_POST["nom"];
+	$note=$_POST["note"];
+	if(isset($_POST["commentaire"])){
+		$commentaire=$_POST["commentaire"];
+		if(mb_strlen(trim($commentaire))>500){
+			return "Commentaire trop long (500 caractères max)";
+		}
+		$commentaire=htmlspecialchars($commentaire);
+		
+	}
+	$CGU=$_POST["CGU"];
+
+	if($note<1 || $note >5){
+		return "note invalide";
+	}
+	if(!$CGU){
+		return "Veuillez accepter les condition d'utilisations";
+	}
+	$nom=htmlspecialchars($nom);
+	$note=htmlspecialchars($note);
+	$msg= "$nom a mis la note $note " . (!empty($commentaire) ? "et le commentaire $commentaire" : "");
 	return $msg;
 }
 echo traitement();
